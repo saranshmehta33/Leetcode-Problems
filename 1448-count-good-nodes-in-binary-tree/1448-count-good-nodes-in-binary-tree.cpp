@@ -14,7 +14,7 @@ public:
     int goodNodes(TreeNode* root,int mx=INT_MIN) {
         
         // if the root is null, we return 0
-        if (!root) return 0;
+        if (root==NULL) return 0;
         /* then we can break it into 3 parts
          the first part is the current node
          if the current node value is greater than the maximum value so far
