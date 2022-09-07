@@ -11,26 +11,14 @@
  */
 class Solution {
 public:
-    // case 1: root is nullptr -> ""
-    // case 2: root doesn't have left sub tree and right sub tree -> root->val
-    // case 3: root->left is not nullptr -> root->val + (dfs result from left sub tree)
-    // case 4: root->left is nullptr but root->right is not nullptr -> root->val + () 
-    // case 5: root->right is not nullptr -> root->val + (dfs result from right sub tree)
     string tree2str(TreeNode* root) {
-        // handle case 1
-        if (!root) return "";
-        // we convert root->val to string here, then append results from different cases
-        string s = to_string(root->val);
-        // handle case 2
-        // this line is obviously not necessary
-        if (!root->left && !root->right) s += "";  
-        // handle case 3
-        if (root->left) s += "(" + tree2str(root->left) + ")";
-        // handle case 4
-        // alternatively, you can use `else if (root->right) s += "()";`
-        if (!root->left && root->right) s += "()";
-        // handle case 5
-        if (root->right) s += "(" + tree2str(root->right) + ")";
-        return s;
-    }
+		string ans = to_string(root->val);
+		if (root->left) //left side check
+			ans += "(" + tree2str(root->left) + ")";
+		if (root->right) { //right side check
+			if (!root->left) ans += "()"; //left side not present, but right side present
+			ans += "(" + tree2str(root->right) + ")"; 
+		}
+		return ans;
+	}
 };
