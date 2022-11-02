@@ -39,7 +39,7 @@ class Solution
     public:
     Node *copyList(Node *head)
     {
-        //Step 1 - Create a clone list
+        //Step1 : Create a clone list
         Node* cloneHead = NULL;
         Node* cloneTail = NULL;
         
@@ -50,27 +50,53 @@ class Solution
             temp = temp->next;
         }
         
-        //Step 2 - Create a map
-        unordered_map<Node*,Node*> oldToNewNode;
+        //Step2 : CloneNodes add in between Original List
+        
         Node* originalNode = head;
         Node* cloneNode = cloneHead;
         
         while(originalNode!=NULL && cloneNode!=NULL)
         {
-            oldToNewNode[originalNode] = cloneNode;
-            originalNode = originalNode->next;
-            cloneNode = cloneNode->next;
+            Node* next = originalNode->next;
+            originalNode->next = cloneNode;
+            originalNode = next;
+            
+            next = cloneNode->next;
+            cloneNode->next = originalNode;
+            cloneNode = next;
         }
+        
+        //Step3 : random pointer copy
+       
+        temp = head;
+        while(temp != NULL)
+        {
+            if(temp->next != NULL)
+            {
+                temp->next->arb = temp->arb ? temp->arb->next : temp->arb;
+            }
+            temp = temp->next->next;
+        }
+        
+        //Step4 : revert the changes done in Step2
         
         originalNode = head;
         cloneNode = cloneHead;
         
-        while(originalNode != NULL)
+        while(originalNode!=NULL && cloneNode!=NULL)
         {
-            cloneNode->arb = oldToNewNode[originalNode->arb];
+            originalNode->next = cloneNode->next;
             originalNode = originalNode->next;
+            
+            if(originalNode != NULL)
+            {
+                cloneNode->next = originalNode->next;
+            }
             cloneNode = cloneNode->next;
         }
+        
+        //Step5 : return ans;
+        
         return cloneHead;
     }
 
